@@ -1,0 +1,8 @@
+name: VillageFaction
+version: '${project.version}'
+main: org.rammex.villagefaction.VillageFaction
+api-version: 1.16
+depend: [PlaceholderAPI, Factions]
+commands:
+  village:
+    description: testfaction
