@@ -27,7 +27,11 @@ public class VillageCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
         if (args.length == 0) {
-            ErrorMessage(player);
+            if(hasVillage(player)){
+                VillageMainMenu(player);
+            } else{
+                ErrorMessage(player);
+            }
         } else {
             if (args[0].equalsIgnoreCase("create")) {
                 if (isPlayerFactionLeader(player)) {
@@ -40,12 +44,15 @@ public class VillageCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "[Error] Vous ne pouvez créer de village de faction que si vous avez le rôle de Leader !");
                 }
             }
+            if (args[0].equalsIgnoreCase("help")){
+                ErrorMessage(player);
+            }
         }
         return false;
     }
 
     private boolean hasVillage(Player player) {
-        return this.plugin.getPlayerConfig().contains("players." + player.getName() + ".village");
+        return this.plugin.getPlayerConfig().getBoolean("players." + player.getName() + ".village");
     }
 
     public boolean isPlayerFactionLeader(Player player) {
@@ -67,15 +74,41 @@ public class VillageCommand implements CommandExecutor {
         player.openInventory(inv);
     }
 
+    public void VillageMainMenu(Player player){
+        Inventory inv = Bukkit.createInventory(null, 9*6, "§0§l✯ Menu Principale Village ✯");
+
+        inv.setItem(0, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(1, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(9, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(8, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(7, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(17, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(46, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(45, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(36, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(52, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(53, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+        inv.setItem(45, getItem(Material.BLACK_STAINED_GLASS_PANE, "§0"));
+
+        inv.setItem(12, getItem(Material.PAPER, "§eStatistiques"));
+        inv.setItem(13, getItem(Material.PLAYER_HEAD, "§eMembres"));
+        inv.setItem(14, getItem(Material.BEACON, "§eClassement"));
+        inv.setItem(20, getItem(Material.COMPASS, "§eHome"));
+        inv.setItem(21, getItem(Material.DIAMOND, "§eUpgrades"));
+        inv.setItem(22, getItem(Material.REDSTONE, "§eSettings"));
+        inv.setItem(23, getItem(Material.GOLD_INGOT, "§eBanque"));
+        inv.setItem(24, getItem(Material.BEDROCK, "§e"));
+
+        player.openInventory(inv);
+    }
+
     public void ErrorMessage(Player player){
-        player.sendMessage(ChatColor.YELLOW+ "------Village De Faction------");
+        player.sendMessage(ChatColor.LIGHT_PURPLE+ "------Village De Faction------");
+        player.sendMessage(ChatColor.YELLOW+ "/village help ( obtient les commandes du plugin )");
         player.sendMessage(ChatColor.YELLOW+ "/village create ( permet de crée un village de faction )");
-        player.sendMessage(ChatColor.YELLOW+ "------Village De Faction------");
-        player.sendMessage(ChatColor.YELLOW+ "------Village De Faction------");
-        player.sendMessage(ChatColor.YELLOW+ "------Village De Faction------");
-        player.sendMessage(ChatColor.YELLOW+ "------Village De Faction------");
-
-
+        player.sendMessage(ChatColor.LIGHT_PURPLE+ "------------------------------");
+        player.sendMessage(ChatColor.LIGHT_PURPLE+ "--------By Rammex--------");
+        player.sendMessage(ChatColor.LIGHT_PURPLE+ "------------------------------");
     }
 
     public ItemStack getItem(Material material, String customName) {
